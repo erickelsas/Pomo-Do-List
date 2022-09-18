@@ -47,13 +47,19 @@
                         Pausa longa
                     </div>
                 </div>
-                <div class="mt-4 mb-4">
+                <div class="mt-4 mb-4 d-flex align-items-center justify-content-center">
                     <h3 class="display-1 text-white font-weight-bold m-0" id="time">25:00</h3>
                 </div>
-                <div class="d-flex justify-content-center align-items-center col-6">
-                    <button class="fundo-btn start col-12" id="start">
+                <div class="d-flex justify-content-between align-items-center col-12">
+                    <div class="col-3"></div>
+                    <button class="fundo-btn start col-6" id="start">
                         Começar
                     </button>
+                    <div class="d-flex justify-content-center align-items-center col-3">
+                        <span class="material-symbols-outlined invisible" id="skip-next">
+                            skip_next
+                        </span>
+                    </div>
                 </div>
             </div>
            
@@ -63,7 +69,7 @@
             </div>
         </section>
 
-        <section id="to-do" class="mt-4 container">
+        <section id="to-do" class="mt-4 container d-none">
             <div class="d-flex flex-column align-center col-10 offset-1">
                 <div class="d-flex justify-content-between align-items-center">
                     <h2 class="mb-0 mt-0">To Do</h2>
@@ -98,8 +104,10 @@
         </section>
     </main>
 
-    <footer>
-        <h3>Feito com &lt;3 por Erick Freitas</h3>
+    <footer class="d-flex justify-content-center align-items-center">
+        <h3 class="mt-0 mr-1">Feito com</h3>
+        <div><span class="material-symbols-outlined" id="heart">favorite</span></div>
+        <h3 class="mt-0 ml-1">por Erick Freitas</h3>
     </footer>
 
     <script src="script.js"></script>
