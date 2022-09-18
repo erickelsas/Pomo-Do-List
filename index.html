@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="styles.css">
+    <title>Pomo Do List</title>
+</head>
+<body>
+    <header>
+        <div class="borda">
+            <nav class="container navbar navbar-expand-lg">
+                <div class="w-100 m-auto d-flex align-items-center justify-content-between">
+                    <a class="navbar-brand" href="#"> 
+                        <h1 class="mt-0">Pomo Do List</h1>
+                    </a>
+                    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarExpand" aria-controls="navbarExpand" aria-expanded="false" aria-label="Trocar navegação!">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
+                </div>
+            
+                <div class="collapse navbar-collapse m-0" id="navbarExpand">
+                    <ul class="d-lg-flex align-items-center list-unstyled w-100 text-center m-0">
+                        <li class="mr-lg-3"><a href="">Configurações</a></li>
+                        <li><a href="">Ajuda</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="pomodoro" class="d-flex flex-column align-items-center container">
+            <div class="d-flex flex-column align-items-center justify-content-center mt-4 p-3 col-10 fundo">
+                <div class="d-flex justify-content-between align-items-stretch">
+                    <div class="fundo-btn ativado mr-2">
+                        Pomodoro
+                    </div>
+                    <div class="fundo-btn mr-2">
+                        Pausa curta
+                    </div>
+                    <div class="fundo-btn">
+                        Pausa longa
+                    </div>
+                </div>
+                <div class="mt-4 mb-4">
+                    <h3 class="display-1 text-white font-weight-bold m-0" id="time">25:00</h3>
+                </div>
+                <div class="d-flex justify-content-center align-items-center col-6">
+                    <button class="fundo-btn start col-12" id="start">
+                        Começar
+                    </button>
+                </div>
+            </div>
+           
+            <div class="d-flex flex-column align-items-center mt-3">
+                <h4 id="cicle" class="mb-0 mt-0">#1</h3>
+                <h3 id="cicle-title" class="mb-0 mt-0">Foco!</h3>
+            </div>
+        </section>
+
+        <section id="to-do" class="mt-4 container">
+            <div class="d-flex flex-column align-center col-10 offset-1">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="mb-0 mt-0">To Do</h2>
+                    <div>
+                        <span class="material-symbols-outlined circle">add</span>
+                    </div>
+                </div>
+
+                <hr>
+                
+                <div class="d-flex flex-column">
+                    <div class="d-flex aligen-items-center justify-content-between">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <input type="checkbox" name="task1" id="task1">
+                            <label for="task1">
+                                <h4 class="mb-0 mt-0 h6">0/2 ciclos</h4>
+                                <h3 class="mb-0 mt-0 h5">Estudar matemática</h3>
+                            </label>
+                        </div>
+
+                        <div class="d-flex">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <span class="material-symbols-outlined circle mr-1">edit</span>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-center">
+                                <span class="material-symbols-outlined circle">delete</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3>Feito com &lt;3 por Erick Freitas</h3>
+    </footer>
+
+    <script src="script.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+</body>
+</html>
