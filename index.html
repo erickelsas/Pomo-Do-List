@@ -25,17 +25,88 @@
             
                 <div class="collapse navbar-collapse m-0" id="navbarExpand">
                     <ul class="d-lg-flex align-items-center list-unstyled w-100 text-center m-0">
-                        <li class="mr-lg-3"><a href="">Configurações</a></li>
-                        <li><a href="">Ajuda</a></li>
+                        <li class="mr-lg-3"><a href="" data-toggle="modal" data-target="#modal-config">Configurações</a></li>
+                        <li><a href="" data-toggle="modal" data-target="#ajuda-modal">Ajuda</a></li>
                     </ul>
                 </div>
             </nav>
         </div>
+
+        <div id="modal-config" class="modal fade" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title font-weight-bold">Configurações</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                    </div>
+    
+                    <div class="modal-body">
+                        <form action="">
+                            <div id="pomodoro-config">
+                                <div class="form-group">
+                                    <h6 class="font-weight-bold">Tempo</h6>
+                                    <div class="row">
+                                        <div class="d-flex flex-column-reverse col-3">
+                                            <input type="number" name="min-form-pomo" id="min-form-pomo" value="25">
+                                            <label for="min-form-pomo">Pomodoro</label> 
+                                        </div>
+
+                                        <div class="d-flex flex-column-reverse col-3">
+                                            <input type="number" name="min-form-pausa" id="min-form-pausa" value="05">
+                                            <label for="min-form-pausa">Pausa</label> 
+                                        </div>
+
+                                        <div class="d-flex flex-column-reverse col-3">
+                                            <input type="number" name="min-form-descanso" id="min-form-descanso" value="15">
+                                            <label for="min-form-descanso">Descanso</label> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button id="btnConfig" type="button" type="submit" class="btn btn-primary">Enviar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="ajuda-modal" class="modal fade" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title font-weight-bold">Ajuda</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                    </div>
+    
+                    <div class="modal-body">
+                        <h6 class="font-weight-bold mb-0">Como funciona o método Pomodoro?</h6>
+                        <p>O método Pomodoro é simples e dura 2 horas ou 5 ciclos! Você realizará uma tarefa por 25 minutos e quando acabar o tempo descansará 5 minutos. Após a realização de 5 ciclos de atividade, o próximo descanso será de 15 minutos!</p>
+
+                        <h6 class="font-weight-bold mb-0">Como customizar o tempo das atividades e descansos?</h6>
+                        <p>Os tempos de atividade e descanso podem ser alterados na aba "Configurações", no canto superior direito.</p>
+                    </div>
+    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </header>
 
-    <main>
-        <section id="pomodoro" class="d-flex flex-column align-items-center container">
-            <div class="d-flex flex-column align-items-center justify-content-center mt-4 p-3 col-10 fundo col-md-8 col-lg-6">
+    
+
+    <main class="d-flex flex-column align-items-center justify-content-center flex-lg-row">
+        <section id="pomodoro" class="d-flex flex-column flex-lg-column-reverse align-items-center justify-content-center container col-lg-5 offset-lg-1">
+            <div class="d-flex flex-column align-items-center justify-content-center mt-4 p-3 col-10 fundo col-md-8 col-lg-12">
                 <div class="d-flex justify-content-between align-items-stretch">
                     <div class="fundo-btn ativado mr-2">
                         Pomodoro
@@ -69,36 +140,50 @@
             </div>
         </section>
 
-        <section id="to-do" class="mt-4 container d-none">
-            <div class="d-flex flex-column align-center col-10 offset-1">
+        <section id="to-do" class="mt-4 container col-12 col-lg-5 offset-lg-0">
+            <div class="d-flex flex-column align-center col-12 offset-0 col-md-10 offset-md-1">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h2 class="mb-0 mt-0">To Do</h2>
-                    <div>
+                    <h2 class="mb-0 mt-0 text-white">To Do</h2>
+                    <div data-toggle="modal" data-target="#modal-addTask">
                         <span class="material-symbols-outlined circle">add</span>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="modal-addTask" data-keyboard="false" tabindex="-1" aria-labelledby="label-addTask" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title font-weight-bold" id="label-addTask">Adicionar tarefa</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>   
+                            </div>
+                            <div class="modal-body">
+                                <form action="">
+                                    <div class="form-group">
+                                        <label for="task-title">Título:</label>
+                                        <input type="text" name="task-title" id="task-title">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="task-cicle">Ciclos:</label>
+                                        <input type="number" name="task-cicle" id="task-cicle">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" id="adc-task">Adicionar tarefa</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <hr>
                 
-                <div class="d-flex flex-column">
-                    <div class="d-flex aligen-items-center justify-content-between">
-                        <div class="d-flex justify-content-center align-items-center">
-                            <input type="checkbox" name="task1" id="task1">
-                            <label for="task1">
-                                <h4 class="mb-0 mt-0 h6">0/2 ciclos</h4>
-                                <h3 class="mb-0 mt-0 h5">Estudar matemática</h3>
-                            </label>
-                        </div>
-
-                        <div class="d-flex">
-                            <div class="d-flex align-items-center justify-content-center">
-                                <span class="material-symbols-outlined circle mr-1">edit</span>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-center">
-                                <span class="material-symbols-outlined circle">delete</span>
-                            </div>
-                        </div>
-                    </div>
+                <div class="d-flex flex-column bg-todo">
+                    <ul class="tasks list-unstyled">
+                    </ul>  
                 </div>
             </div>
         </section>

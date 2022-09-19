@@ -1,11 +1,17 @@
 window.ciclo = 1;
 window.flag = 0;
 window.estado = 'pomodoro';
+window.tasks = [];
+window.tempo = {
+    pomodoro: 25,
+    pausa: 5,
+    descanso: 15,
+}
 
 btnTipo = document.querySelectorAll('#pomodoro .fundo-btn');
 
 let h = {
-    min: '25',
+    min: window.tempo.pomodoro,
     seg: '00',
 }
 
@@ -26,8 +32,11 @@ const getTime = () => {
 }
 
 const changePomodoro = () => {
+    clearInterval(cronometro);
+
     html = document.querySelector('html');
     frsCiclo = document.getElementById('cicle-title');
+    start = document.getElementById('start');
 
     if(html.classList.contains('pausa')){
         html.classList.remove('pausa');
@@ -41,17 +50,22 @@ const changePomodoro = () => {
 
     window.estado = 'pomodoro';
     frsCiclo.textContent = 'Foco!'
+    start.textContent = 'Começar';
 
-    h.min = '25';
+    h.min = window.tempo.pomodoro;
     h.seg = '00';
     setTime(h);
 
+    window.flag = 0;
     window.estado = 'pomodoro';
 }
 
 const changePausa =  () => {
+    clearInterval(cronometro);
+    
     html = document.querySelector('html');
     frsCiclo = document.getElementById('cicle-title');
+    start = document.getElementById('start');
 
     if(html.classList.contains('descanso')){
         html.classList.remove('descanso');
@@ -66,17 +80,22 @@ const changePausa =  () => {
 
     window.estado = 'pausa curta';
     frsCiclo.textContent = 'Pausa!'
+    start.textContent = 'Começar';
 
-    h.min = '05';
+    h.min = window.tempo.pausa;
     h.seg = '00';
     setTime(h);
 
+    window.flag = 0;
     window.estado = 'pausa';
 }
 
 const changeDescanso = () => {
+    clearInterval(cronometro);
+
     html = document.querySelector('html');
     frsCiclo = document.getElementById('cicle-title');
+    start = document.getElementById('start');
 
     if(html.classList.contains('pausa')){
         html.classList.remove('pausa');
@@ -91,11 +110,13 @@ const changeDescanso = () => {
 
     window.estado = 'pausa longa';
     frsCiclo.textContent = 'Descanso!'
+    start.textContent = 'Começar';
 
-    h.min = '15';
+    h.min = window.tempo.descanso;
     h.seg = '00';
     setTime(h);
 
+    window.flag = 0;
     window.estado = 'descanso';
 }
 
@@ -107,11 +128,14 @@ const controlaCiclo = () => {
     document.getElementById('cicle').textContent = `#${window.ciclo}`;
 }
 
-const proximoEstado = (btn) => {
-    clearInterval(cronometro);
-    skip.classList.add('invisible');
+const limpaCampo = () => {
+    document.getElementById('task-title').value = "";
+    document.getElementById('task-cicle').value = "";
+}
 
-    btn.textContent = 'Começar';
+const proximoEstado = () => {
+    const skip = document.getElementById('skip-next');
+    skip.classList.add('invisible');
 
     if(window.estado == 'pomodoro'){
         controlaCiclo();
@@ -126,8 +150,6 @@ const proximoEstado = (btn) => {
         }
         changePomodoro();
     }
-
-    window.flag = 0;
 }
 
 
@@ -147,7 +169,7 @@ btnTipo[2].addEventListener('click', () => {
 let cronometro;
 
 document.getElementById('start').addEventListener('click', (e) => {
-    skip = document.getElementById('skip-next');
+    const skip = document.getElementById('skip-next');
 
     skip.classList.remove('invisible');
     let hora = getTime();
@@ -176,7 +198,7 @@ document.getElementById('start').addEventListener('click', (e) => {
                     setTime(h);
                 }
             } else if(h.seg == '00' && h.min == '00') {
-                proximoEstado(e.target);
+                proximoEstado();
             } 
         }, 1000);
 
@@ -191,7 +213,92 @@ document.getElementById('start').addEventListener('click', (e) => {
     } 
 });
 
+document.getElementById('start').addEventListener('dblclick', () => {
+    document.getElementById('skip-next').classList.add('invisible');
+
+    if(window.estado == 'pomodoro'){
+        changePomodoro();
+    } else if(window.estado == 'pausa'){
+        changePausa();
+    } else {
+        changeDescanso();
+    }
+});
+
 document.getElementById('skip-next').addEventListener('click', () => {
     document.getElementById('start');
     proximoEstado(start);
 })
+
+document.getElementById('adc-task').addEventListener('click', () => {
+    let task = {
+        title: document.getElementById('task-title').value,
+        cicle: document.getElementById('task-cicle').value,
+    }
+
+    if(task.title == ""){
+        $('#modal-addTask').modal('hide');
+        alert("O campo de título não pode ser vazio!");
+        limpaCampo();
+        return;
+    } else if (task.cicle == ""){
+        task.cicle = 1;
+    }
+
+    window.tasks.push(task);
+
+    taskTemplate = `<li class="d-flex align-items-center justify-content-between task" id="li${window.tasks.length}">
+                <div class="d-flex justify-content-center align-items-center h-100">
+                    <input type="checkbox" name="task${window.tasks.length}" id="task${window.tasks.length}" class="mr-3">
+                    <label for="task${window.tasks.length}" class="d-flex flex-column">
+                        <h4 class="my-0 h6">0/${task.cicle} ciclo(s)</h4>
+                        <h3 class="my-0 h5">${task.title}</h3>
+                    </label>
+                </div>
+
+                <div class="d-flex">
+                    <div class="d-none align-items-center justify-content-center">
+                        <span class="material-symbols-outlined circle mr-1 edit">edit</span>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <span class="material-symbols-outlined circle del">delete</span>
+                    </div>
+                </div>
+            </li>`
+
+    taskHtml = document.createRange().createContextualFragment(taskTemplate);
+    lista = document.querySelector("#to-do ul");
+    lista.appendChild(taskHtml);
+
+    $('#modal-addTask').modal('hide');
+
+    limpaCampo();
+});
+
+document.querySelector('.tasks').addEventListener('click', (e) => {
+    const li = e.target.closest('.task');
+    ul = e.target.closest(".tasks");
+    nodes = Array.from(ul.children);
+    idLi = nodes.indexOf(li);
+
+    if(e.target.classList.contains('del')){
+        window.tasks.splice(idLi,1);
+        ul.removeChild(li);
+    }
+});
+
+document.getElementById('btnConfig').addEventListener('click', () => {
+    window.tempo.pomodoro = document.getElementById('min-form-pomo').value;
+    window.tempo.pausa = document.getElementById('min-form-pausa').value;
+    window.tempo.descanso = document.getElementById('min-form-descanso').value;
+
+    if(window.estado == 'pomodoro'){
+        changePomodoro();
+    } else if(window.estado == 'pausa'){
+        changePausa();
+    } else {
+        changeDescanso();
+    }
+
+    $('#modal-config').modal('hide');
+});
