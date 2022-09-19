@@ -152,7 +152,21 @@ const proximoEstado = () => {
     }
 }
 
+document.getElementById('btnConfig').addEventListener('click', () => {
+    window.tempo.pomodoro = document.getElementById('min-form-pomo').value;
+    window.tempo.pausa = document.getElementById('min-form-pausa').value;
+    window.tempo.descanso = document.getElementById('min-form-descanso').value;
 
+    if(window.estado == 'pomodoro'){
+        changePomodoro();
+    } else if(window.estado == 'pausa'){
+        changePausa();
+    } else {
+        changeDescanso();
+    }
+
+    $('#modal-config').modal('hide');
+});
 
 btnTipo[0].addEventListener('click', () => {
     changePomodoro();
@@ -285,20 +299,4 @@ document.querySelector('.tasks').addEventListener('click', (e) => {
         window.tasks.splice(idLi,1);
         ul.removeChild(li);
     }
-});
-
-document.getElementById('btnConfig').addEventListener('click', () => {
-    window.tempo.pomodoro = document.getElementById('min-form-pomo').value;
-    window.tempo.pausa = document.getElementById('min-form-pausa').value;
-    window.tempo.descanso = document.getElementById('min-form-descanso').value;
-
-    if(window.estado == 'pomodoro'){
-        changePomodoro();
-    } else if(window.estado == 'pausa'){
-        changePausa();
-    } else {
-        changeDescanso();
-    }
-
-    $('#modal-config').modal('hide');
 });
