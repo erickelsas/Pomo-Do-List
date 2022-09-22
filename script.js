@@ -1,17 +1,15 @@
-window.ciclo = 1;
-window.flag = 0;
-window.estado = 'pomodoro';
-window.tasks = [];
-window.tempo = {
+let ciclo = 1;
+let flag = 0;
+let estado = 'pomodoro';
+let tasks = [];
+let tempo = {
     pomodoro: 25,
     pausa: 5,
     descanso: 15,
 }
 
-btnTipo = document.querySelectorAll('#pomodoro .fundo-btn');
-
 let h = {
-    min: window.tempo.pomodoro,
+    min: tempo.pomodoro,
     seg: '00',
 }
 
@@ -31,101 +29,104 @@ const getTime = () => {
     return hora;
 }
 
-const changePomodoro = () => {
-    clearInterval(cronometro);
+const change = {
+    pomodoro: () => {
+        clearInterval(cronometro);
 
-    html = document.querySelector('html');
-    frsCiclo = document.getElementById('cicle-title');
-    start = document.getElementById('start');
-
-    if(html.classList.contains('pausa')){
-        html.classList.remove('pausa');
-        btnTipo[0].classList.add('ativado');
-        btnTipo[1].classList.remove('ativado');
-    } else if(html.classList.contains('descanso')){
-        html.classList.remove('descanso');
-        btnTipo[0].classList.add('ativado');
-        btnTipo[2].classList.remove('ativado');
-    }
-
-    window.estado = 'pomodoro';
-    frsCiclo.textContent = 'Foco!'
-    start.textContent = 'Começar';
-
-    h.min = window.tempo.pomodoro;
-    h.seg = '00';
-    setTime(h);
-
-    window.flag = 0;
-    window.estado = 'pomodoro';
-}
-
-const changePausa =  () => {
-    clearInterval(cronometro);
+        html = document.querySelector('html');
+        frsCiclo = document.getElementById('cicle-title');
+        start = document.getElementById('start');
     
-    html = document.querySelector('html');
-    frsCiclo = document.getElementById('cicle-title');
-    start = document.getElementById('start');
+        if(html.classList.contains('pausa')){
+            html.classList.remove('pausa');
+            btnTipo[0].classList.add('ativado');
+            btnTipo[1].classList.remove('ativado');
+        } else if(html.classList.contains('descanso')){
+            html.classList.remove('descanso');
+            btnTipo[0].classList.add('ativado');
+            btnTipo[2].classList.remove('ativado');
+        }
+    
+        estado = 'pomodoro';
+        frsCiclo.textContent = 'Foco!'
+        start.textContent = 'Começar';
+    
+        h.min = tempo.pomodoro;
+        h.seg = '00';
+        setTime(h);
+    
+        flag = 0;
+        estado = 'pomodoro';
+    },
 
-    if(html.classList.contains('descanso')){
-        html.classList.remove('descanso');
-        html.classList.add('pausa');
-        btnTipo[2].classList.remove('ativado');
-        btnTipo[1].classList.add('ativado');
-    } else {
-        html.classList.add('pausa');
-        btnTipo[0].classList.remove('ativado');
-        btnTipo[1].classList.add('ativado');
+    pausa: () => {
+        clearInterval(cronometro);
+    
+        html = document.querySelector('html');
+        frsCiclo = document.getElementById('cicle-title');
+        start = document.getElementById('start');
+
+        if(html.classList.contains('descanso')){
+            html.classList.remove('descanso');
+            html.classList.add('pausa');
+            btnTipo[2].classList.remove('ativado');
+            btnTipo[1].classList.add('ativado');
+        } else {
+            html.classList.add('pausa');
+            btnTipo[0].classList.remove('ativado');
+            btnTipo[1].classList.add('ativado');
+        }
+
+        estado = 'pausa curta';
+        frsCiclo.textContent = 'Pausa!'
+        start.textContent = 'Começar';
+
+        h.min = tempo.pausa;
+        h.seg = '00';
+        setTime(h);
+
+        flag = 0;
+        estado = 'pausa';
+        },
+    
+    descanso: () => {
+        clearInterval(cronometro);
+
+        html = document.querySelector('html');
+        frsCiclo = document.getElementById('cicle-title');
+        start = document.getElementById('start');
+    
+        if(html.classList.contains('pausa')){
+            html.classList.remove('pausa');
+            html.classList.add('descanso');
+            btnTipo[1].classList.remove('ativado');
+            btnTipo[2].classList.add('ativado');
+        } else {
+            html.classList.add('descanso');
+            btnTipo[0].classList.remove('ativado');
+            btnTipo[2].classList.add('ativado');
+        }
+    
+        estado = 'pausa longa';
+        frsCiclo.textContent = 'Descanso!'
+        start.textContent = 'Começar';
+    
+        h.min = tempo.descanso;
+        h.seg = '00';
+        setTime(h);
+    
+        flag = 0;
+        estado = 'descanso';
     }
-
-    window.estado = 'pausa curta';
-    frsCiclo.textContent = 'Pausa!'
-    start.textContent = 'Começar';
-
-    h.min = window.tempo.pausa;
-    h.seg = '00';
-    setTime(h);
-
-    window.flag = 0;
-    window.estado = 'pausa';
 }
 
-const changeDescanso = () => {
-    clearInterval(cronometro);
-
-    html = document.querySelector('html');
-    frsCiclo = document.getElementById('cicle-title');
-    start = document.getElementById('start');
-
-    if(html.classList.contains('pausa')){
-        html.classList.remove('pausa');
-        html.classList.add('descanso');
-        btnTipo[1].classList.remove('ativado');
-        btnTipo[2].classList.add('ativado');
-    } else {
-        html.classList.add('descanso');
-        btnTipo[0].classList.remove('ativado');
-        btnTipo[2].classList.add('ativado');
-    }
-
-    window.estado = 'pausa longa';
-    frsCiclo.textContent = 'Descanso!'
-    start.textContent = 'Começar';
-
-    h.min = window.tempo.descanso;
-    h.seg = '00';
-    setTime(h);
-
-    window.flag = 0;
-    window.estado = 'descanso';
-}
 
 const controlaCiclo = () => {
-    window.ciclo++;
-    if(window.ciclo == 6){
-        window.ciclo = 1;
+    ciclo++;
+    if(ciclo == 6){
+        ciclo = 1;
     }
-    document.getElementById('cicle').textContent = `#${window.ciclo}`;
+    document.getElementById('cicle').textContent = `#${ciclo}`;
 }
 
 const limpaCampo = () => {
@@ -137,47 +138,53 @@ const proximoEstado = () => {
     const skip = document.getElementById('skip-next');
     skip.classList.add('invisible');
 
-    if(window.estado == 'pomodoro'){
+    if(estado == 'pomodoro'){
         controlaCiclo();
-        if(window.ciclo == 5){
-            changeDescanso();
+        if(ciclo == 5){
+            change.descanso();
         } else {
-            changePausa();
+            change.pausa();
         }
     } else {
-        if(window.estado == 'descanso'){
+        if(estado == 'descanso'){
             controlaCiclo();
         }
-        changePomodoro();
+        change.pomodoro();
     }
 }
 
-document.getElementById('btnConfig').addEventListener('click', () => {
-    window.tempo.pomodoro = document.getElementById('min-form-pomo').value;
-    window.tempo.pausa = document.getElementById('min-form-pausa').value;
-    window.tempo.descanso = document.getElementById('min-form-descanso').value;
-
-    if(window.estado == 'pomodoro'){
-        changePomodoro();
-    } else if(window.estado == 'pausa'){
-        changePausa();
-    } else {
-        changeDescanso();
+const validaHora = (hora) => {
+    if(hora == 0){
+        return 1;
+    } else if(hora < 10 && hora.length < 2){
+        return `0${hora}`;
     }
+
+    return hora;
+}
+
+document.getElementById('btnConfig').addEventListener('click', () => {
+    tempo.pomodoro = validaHora(document.getElementById('min-form-pomo').value);
+    tempo.pausa = validaHora(document.getElementById('min-form-pausa').value);
+    tempo.descanso = validaHora(document.getElementById('min-form-descanso').value);
+
+    change[estado]();
 
     $('#modal-config').modal('hide');
 });
 
+const btnTipo = document.querySelectorAll('#pomodoro .fundo-btn');
+
 btnTipo[0].addEventListener('click', () => {
-    changePomodoro();
+    change.pomodoro();
 });
 
 btnTipo[1].addEventListener('click', () => {
-    changePausa();
+    change.pausa();
 });
 
 btnTipo[2].addEventListener('click', () => {
-    changeDescanso();
+    change.descanso();
 });
 
 let cronometro;
@@ -187,10 +194,11 @@ document.getElementById('start').addEventListener('click', (e) => {
 
     skip.classList.remove('invisible');
     let hora = getTime();
+    console.log(hora);
 
-    if(window.flag == 0){
+    if(flag == 0){
         cronometro = setInterval(() => {
-            if(h.seg == '00' && h.min != '00'){
+            if(h.seg == 00 && h.min != 00){
                 hora.min--;
                 if(hora.min <= 10){
                     hora.min = `0${hora.min}`;
@@ -211,17 +219,19 @@ document.getElementById('start').addEventListener('click', (e) => {
                     h = hora;
                     setTime(h);
                 }
-            } else if(h.seg == '00' && h.min == '00') {
+            } else if(h.seg == 00 && h.min == 00) {
+                const audio = new Audio('effect.wav');
+                audio.play();
                 proximoEstado();
             } 
         }, 1000);
 
-        window.flag = 1;
+        flag = 1;
 
         e.target.textContent = 'Pausar';
     } else {
         clearInterval(cronometro);
-        window.flag = 0;
+        flag = 0;
 
         e.target.textContent = 'Começar';
     } 
@@ -230,13 +240,7 @@ document.getElementById('start').addEventListener('click', (e) => {
 document.getElementById('start').addEventListener('dblclick', () => {
     document.getElementById('skip-next').classList.add('invisible');
 
-    if(window.estado == 'pomodoro'){
-        changePomodoro();
-    } else if(window.estado == 'pausa'){
-        changePausa();
-    } else {
-        changeDescanso();
-    }
+    change[estado]();
 });
 
 document.getElementById('skip-next').addEventListener('click', () => {
@@ -259,12 +263,12 @@ document.getElementById('adc-task').addEventListener('click', () => {
         task.cicle = 1;
     }
 
-    window.tasks.push(task);
+    tasks.push(task);
 
-    taskTemplate = `<li class="d-flex align-items-center justify-content-between task" id="li${window.tasks.length}">
+    taskTemplate = `<li class="d-flex align-items-center justify-content-between task" id="li${tasks.length}">
                 <div class="d-flex justify-content-center align-items-center h-100">
-                    <input type="checkbox" name="task${window.tasks.length}" id="task${window.tasks.length}" class="mr-3">
-                    <label for="task${window.tasks.length}" class="d-flex flex-column">
+                    <input type="checkbox" name="task${tasks.length}" id="task${tasks.length}" class="mr-3">
+                    <label for="task${tasks.length}" class="d-flex flex-column">
                         <h4 class="my-0 h6">0/${task.cicle} ciclo(s)</h4>
                         <h3 class="my-0 h5">${task.title}</h3>
                     </label>
@@ -296,7 +300,7 @@ document.querySelector('.tasks').addEventListener('click', (e) => {
     idLi = nodes.indexOf(li);
 
     if(e.target.classList.contains('del')){
-        window.tasks.splice(idLi,1);
+        tasks.splice(idLi,1);
         ul.removeChild(li);
     }
 });
