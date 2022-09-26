@@ -22,8 +22,8 @@
                     <a class="navbar-brand" href="#"> 
                         <h1 class="mt-0">Pomo Do List</h1>
                     </a>
-                    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarExpand" aria-controls="navbarExpand" aria-expanded="false" aria-label="Trocar navegação!">
-                        <span class="material-symbols-outlined">menu</span>
+                    <button id="close" class="navbar-toggler" data-toggle="collapse" data-target="#navbarExpand" aria-controls="navbarExpand" aria-expanded="false" aria-label="Trocar navegação!">
+                        <div class="hamburguer"></div>
                     </button>
                 </div>
             
@@ -38,11 +38,11 @@
 
         <div id="modal-config" class="modal fade" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                <div class="modal-content">
+                <div class="modal-content" id="modal-bg">
                     <div class="modal-header">
                         <h5 class="modal-title font-weight-bold">Configurações</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                            <span aria-hidden="true" id="close">&times;</span>
                           </button>
                     </div>
     
@@ -74,7 +74,7 @@
     
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                        <button id="btnConfig" type="button" type="submit" class="btn btn-primary">Enviar</button>
+                        <button id="btnConfig" type="button" type="submit" class="fundo-btn ativado">Enviar</button>
                     </div>
                 </div>
             </div>
@@ -99,7 +99,7 @@
                     </div>
     
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                     </div>
                 </div>
             </div>
@@ -152,7 +152,7 @@
                 </div>
 
                 <div class="modal fade" id="modal-addTask" data-keyboard="false" tabindex="-1" aria-labelledby="label-addTask" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title font-weight-bold" id="label-addTask">Adicionar tarefa</h5>
@@ -174,8 +174,38 @@
                                 </form>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" id="adc-task">Adicionar tarefa</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                <button type="button" class="fundo-btn ativado" id="adc-task">Adicionar tarefa</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="modal-editTask" data-keyboard="false" tabindex="-1" aria-labelledby="label-addTask" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title font-weight-bold" id="label-addTask">Editar tarefa</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>   
+                            </div>
+                            <div class="modal-body">
+                                <form action="">
+                                    <div class="form-group">
+                                        <label for="task-title-edit">Título:</label>
+                                        <input type="text" name="task-title-edit" id="task-title-edit">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="task-cicle-edit">Ciclos:</label>
+                                        <input type="number" name="task-cicle-edit" id="task-cicle-edit">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                <button type="button" class="fundo-btn ativado" id="edit-task">Adicionar tarefa</button>
                             </div>
                         </div>
                     </div>
