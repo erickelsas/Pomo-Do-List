@@ -1,14 +1,16 @@
-ciclo = 1;
-flag = 0;
-estado = 'pomodoro';
-tasks = [];
-tempo = {
-    pomodoro: 25,
-    pausa: 5,
-    descanso: 15,
+let ciclo = 1;
+let flag = 0;
+let estado = 'pomodoro';
+let tasks = [];
+let tempo = {
+    pomodoro: "25",
+    pausa: "05",
+    descanso: "15",
 }
 
-btnTipo = document.querySelectorAll('#pomodoro .fundo-btn');
+let editId = null;
+
+const btnTipo = document.querySelectorAll('#pomodoro .fundo-btn');
 
 let h = {
     min: tempo.pomodoro,
@@ -132,6 +134,11 @@ const limpaCampo = () => {
     document.getElementById('task-cicle').value = "";
 }
 
+const limpaCampoEdit = () => {
+    document.getElementById('task-title-edit').value = "";
+    document.getElementById('task-cicle-edit').value = "";
+}
+
 const proximoEstado = () => {
     const skip = document.getElementById('skip-next');
     skip.classList.add('invisible');
@@ -159,6 +166,28 @@ const validaMin = (min) => {
     }
 
     return "01";
+}
+
+const atualizaCiclo = () => {
+    flagCicle = 0;
+    i = 0;
+    do{
+        if(i == tasks.length){
+            flagCicle = 1;
+        } else if(tasks[i].cicleAtual < tasks[i].cicle && flagCicle != 1){
+            tasks[i].cicleAtual += 1;
+            flagCicle = 1;
+
+            cicleText = document.querySelector(`#cicle${i}`);
+            cicleText.textContent = `${tasks[i].cicleAtual}/${tasks[i].cicle} ciclo(s)`;
+
+            if(tasks[i].cicleAtual == tasks[i].cicle){
+                document.querySelector(`#task${i}`).checked = true;
+            }
+        }
+
+        i++;
+    }while(flagCicle != 1)
 }
 
 document.getElementById('btnConfig').addEventListener('click', () => {
@@ -218,6 +247,8 @@ document.getElementById('start').addEventListener('click', (e) => {
                 const audio = new Audio("effects.wav");
                 audio.play();
                 proximoEstado();
+
+                atualizaCiclo();
             } 
         }, 1000);
 
@@ -245,14 +276,18 @@ document.getElementById('start').addEventListener('dblclick', () => {
 });
 
 document.getElementById('skip-next').addEventListener('click', () => {
-    document.getElementById('start');
-    proximoEstado(start);
+    if(estado == 'pomodoro' && tasks.length != 0){
+        atualizaCiclo();
+    }
+
+    proximoEstado();
 })
 
 document.getElementById('adc-task').addEventListener('click', () => {
     let task = {
         title: document.getElementById('task-title').value,
         cicle: document.getElementById('task-cicle').value,
+        cicleAtual: 0,
     }
 
     if(task.title == ""){
@@ -264,19 +299,18 @@ document.getElementById('adc-task').addEventListener('click', () => {
         task.cicle = 1;
     }
 
-    tasks.push(task);
 
     taskTemplate = `<li class="d-flex align-items-center justify-content-between task" id="li${tasks.length}">
                 <div class="d-flex justify-content-center align-items-center h-100">
                     <input type="checkbox" name="task${tasks.length}" id="task${tasks.length}" class="mr-3">
                     <label for="task${tasks.length}" class="d-flex flex-column">
-                        <h4 class="my-0 h6">0/${task.cicle} ciclo(s)</h4>
-                        <h3 class="my-0 h5">${task.title}</h3>
+                        <h4 class="my-0 h6" id="cicle${tasks.length}">0/${task.cicle} ciclo(s)</h4>
+                        <h3 class="my-0 h5" id="task-title${tasks.length}">${task.title}</h3>
                     </label>
                 </div>
 
                 <div class="d-flex">
-                    <div class="d-none align-items-center justify-content-center">
+                    <div class="d-flex align-items-center justify-content-center">
                         <span class="material-symbols-outlined circle mr-1 edit">edit</span>
                     </div>
                     <div class="d-flex align-items-center justify-content-center">
@@ -289,6 +323,7 @@ document.getElementById('adc-task').addEventListener('click', () => {
     lista = document.querySelector("#to-do ul");
     lista.appendChild(taskHtml);
 
+    tasks.push(task);
     $('#modal-addTask').modal('hide');
 
     limpaCampo();
@@ -304,4 +339,37 @@ document.querySelector('.tasks').addEventListener('click', (e) => {
         tasks.splice(idLi,1);
         ul.removeChild(li);
     }
+
+    if(e.target.classList.contains('edit')){
+        $('#modal-editTask').modal('show');
+        
+        editId = idLi;
+    }
 });
+
+document.querySelector('#close').addEventListener('click', (e) => {
+    document.querySelector('.hamburguer').classList.toggle('change');
+})
+
+document.querySelector('#edit-task').addEventListener('click', () => {
+    if(document.getElementById('task-title-edit').value != ""){
+        tasks[editId].title = document.getElementById('task-title-edit').value;
+    }
+    
+    if(document.getElementById('task-cicle-edit').value != ""){
+        tasks[editId].cicle = document.getElementById('task-cicle-edit').value;
+    }
+
+
+    if(tasks[editId].cicle > tasks[editId].cicleAtual){
+        document.querySelector(`#task${editId}`).checked = false;
+    } else if (tasks[editId].cicle < tasks[editId].cicleAtual){
+        document.querySelector(`#task${editId}`).checked = true;
+    }
+
+    document.querySelector(`#cicle${editId}`).textContent = `${tasks[editId].cicleAtual}/${tasks[editId].cicle} ciclo(s)`;
+    document.querySelector(`#task-title${editId}`).textContent = `${tasks[editId].title}`;
+
+    limpaCampoEdit();
+    $('#modal-editTask').modal('hide');
+})
