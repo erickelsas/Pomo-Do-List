@@ -2,11 +2,7 @@ let ciclo = 1;
 let flag = 0;
 let estado = 'pomodoro';
 let tasks = [];
-let tempo = {
-    pomodoro: "25",
-    pausa: "05",
-    descanso: "15",
-}
+let tempo = {}
 
 let editId = null;
 
@@ -195,6 +191,7 @@ document.getElementById('btnConfig').addEventListener('click', () => {
     tempo.pausa = validaMin(document.getElementById('min-form-pausa').value);
     tempo.descanso = validaMin(document.getElementById('min-form-descanso').value);
 
+    addTempoLocal();
     change[estado]();
 
     $('#modal-config').modal('hide');
@@ -283,6 +280,80 @@ document.getElementById('skip-next').addEventListener('click', () => {
     proximoEstado();
 })
 
+const addTaskToHtml = (task , i) => {
+    taskTemplate = `<li class="d-flex align-items-center justify-content-between task" id="li${i}">
+                        <div class="d-flex justify-content-center align-items-center h-100">
+                            <input type="checkbox" name="task${i}" id="task${i}" class="mr-3">
+                            <label for="task${i}" class="d-flex flex-column">
+                                <h4 class="my-0 h6" id="cicle${i}">0/${task.cicle} ciclo(s)</h4>
+                                <h3 class="my-0 h5" id="task-title${i}">${task.title}</h3>
+                            </label>
+                        </div>
+
+                        <div class="d-flex">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <span class="material-symbols-outlined circle mr-1 edit">edit</span>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-center">
+                                <span class="material-symbols-outlined circle del">delete</span>
+                            </div>
+                        </div>
+                    </li>`
+
+    taskHtml = document.createRange().createContextualFragment(taskTemplate);
+    lista = document.querySelector("#to-do ul");
+    lista.appendChild(taskHtml);
+}
+
+const addTempoLocal = () => {
+    localStorage.configTempo = JSON.stringify(tempo);
+}
+
+const addTaskLocal = (task) => {
+    if(localStorage.localTasks){
+        tasks = JSON.parse(localStorage.getItem('localTasks'));
+    }
+
+    tasks.push(task);
+    localStorage.localTasks = JSON.stringify(tasks);
+}
+
+const removeTaskLocal = (id) => {
+    if(localStorage.localTasks){
+        tasks = JSON.parse(localStorage.getItem('localTasks'));
+        tasks.splice(id, 1);
+        localStorage.localTasks = JSON.stringify(tasks);
+    }
+}
+
+const editTaskLocal = () => {
+
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    if(localStorage.configTempo){
+        tempo = JSON.parse(localStorage.getItem('configTempo'));
+    } else {
+        tempo.pomodoro = "25";
+        tempo.pausa = "05";
+        tempo.descanso = "15";
+
+        localStorage.configTempo = JSON.stringify(tempo);
+    }
+
+    if(localStorage.localTasks){
+        tasks = JSON.parse(localStorage.getItem('localTasks'));
+
+        i = 0;
+        while(i < tasks.length){
+            addTaskToHtml(tasks[i], i);
+            i++;
+        }
+    }
+
+    change[estado]();
+})
+
 document.getElementById('adc-task').addEventListener('click', () => {
     let task = {
         title: document.getElementById('task-title').value,
@@ -299,31 +370,9 @@ document.getElementById('adc-task').addEventListener('click', () => {
         task.cicle = 1;
     }
 
+    addTaskToHtml(task, tasks.length);
+    addTaskLocal(task);
 
-    taskTemplate = `<li class="d-flex align-items-center justify-content-between task" id="li${tasks.length}">
-                <div class="d-flex justify-content-center align-items-center h-100">
-                    <input type="checkbox" name="task${tasks.length}" id="task${tasks.length}" class="mr-3">
-                    <label for="task${tasks.length}" class="d-flex flex-column">
-                        <h4 class="my-0 h6" id="cicle${tasks.length}">0/${task.cicle} ciclo(s)</h4>
-                        <h3 class="my-0 h5" id="task-title${tasks.length}">${task.title}</h3>
-                    </label>
-                </div>
-
-                <div class="d-flex">
-                    <div class="d-flex align-items-center justify-content-center">
-                        <span class="material-symbols-outlined circle mr-1 edit">edit</span>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-center">
-                        <span class="material-symbols-outlined circle del">delete</span>
-                    </div>
-                </div>
-            </li>`
-
-    taskHtml = document.createRange().createContextualFragment(taskTemplate);
-    lista = document.querySelector("#to-do ul");
-    lista.appendChild(taskHtml);
-
-    tasks.push(task);
     $('#modal-addTask').modal('hide');
 
     limpaCampo();
@@ -336,7 +385,7 @@ document.querySelector('.tasks').addEventListener('click', (e) => {
     idLi = nodes.indexOf(li);
 
     if(e.target.classList.contains('del')){
-        tasks.splice(idLi,1);
+        removeTaskLocal(idLi);
         ul.removeChild(li);
     }
 
@@ -366,6 +415,8 @@ document.querySelector('#edit-task').addEventListener('click', () => {
     } else if (tasks[editId].cicle < tasks[editId].cicleAtual){
         document.querySelector(`#task${editId}`).checked = true;
     }
+
+    localStorage.localTasks = JSON.stringify(tasks);
 
     document.querySelector(`#cicle${editId}`).textContent = `${tasks[editId].cicleAtual}/${tasks[editId].cicle} ciclo(s)`;
     document.querySelector(`#task-title${editId}`).textContent = `${tasks[editId].title}`;
